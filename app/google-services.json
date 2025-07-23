@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548048583590",
+    "project_id": "tservicekg1",
+    "storage_bucket": "tservicekg1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548048583590:android:32e5085a141eb7b5376d67",
+        "android_client_info": {
+          "package_name": "kg.abu.tservicekg1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBizt7Shk8c23KEOsD1S5TZahwNFE4XNpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
