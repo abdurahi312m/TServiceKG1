@@ -20,17 +20,6 @@ fun OnBoardingScreen(navController: NavHostController) {
 
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        val sharedPrefs = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val alreadyShown = sharedPrefs.getBoolean("completed", false)
-
-        if (alreadyShown) {
-            navController.navigate("home") {
-                popUpTo("onBoarding") { inclusive = true }
-            }
-        }
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
         Text("Welcome to OnBoarding 🧭")
     }
@@ -51,7 +40,8 @@ fun OnBoardingScreen(navController: NavHostController) {
 fun completeOnBoarding(navController: NavHostController, context: Context) {
     val prefs = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
     prefs.edit { putBoolean("completed", true) }
-    navController.navigate("home") {
+    // После завершения онбординга всегда переходим на AuthScreen
+    navController.navigate("auth") {
         popUpTo("onBoarding") { inclusive = true }
     }
 }

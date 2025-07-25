@@ -10,20 +10,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import kg.abu.data.repository.PhoneAuthResult
 import kg.abu.presentation.R
 
 fun Context.findActivity(): Activity? = when (this) {
@@ -48,7 +43,7 @@ fun AuthScreen(
     onAuthSuccess: () -> Unit
 ) {
     val authState by authViewModel.authState.collectAsStateWithLifecycle()
-    val phoneAuthState by authViewModel.phoneAuthFlow.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val activity = context.findActivity()
 
@@ -99,42 +94,9 @@ fun AuthScreen(
                 (authState as AuthState.Error).message,
                 Toast.LENGTH_LONG
             ).show()
-
             else -> {}
         }
     }
-
-    var phoneNumber by remember { mutableStateOf("") }
-    var smsCode by remember { mutableStateOf("") }
-    var showCodeInput by remember { mutableStateOf(false) }
-
-    LaunchedEffect(phoneAuthState) {
-        when (phoneAuthState) {
-            is PhoneAuthResult.CodeSent -> {
-                showCodeInput = true
-                Toast.makeText(context, "Verification code sent!", Toast.LENGTH_SHORT).show()
-            }
-
-            is PhoneAuthResult.VerificationCompleted -> {
-            }
-
-            is PhoneAuthResult.VerificationFailed -> {
-                Toast.makeText(
-                    context,
-                    "Phone Auth failed: ${(phoneAuthState as PhoneAuthResult.VerificationFailed).errorMessage}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-
-            is PhoneAuthResult.CodeAutoRetrievalTimeout -> {
-                Toast.makeText(context, "Code auto-retrieval timed out", Toast.LENGTH_SHORT).show()
-                showCodeInput = true
-            }
-
-            else -> {}
-        }
-    }
-
 
     Column(
         modifier = Modifier
@@ -149,45 +111,6 @@ fun AuthScreen(
         Button(onClick = { googleSignInLauncher.launch(googleSignInClient.signInIntent) }) {
             Text("Sign in with Google")
         }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            label = { Text("Phone Number (e.g., +16505551234)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {
-            if (phoneNumber.isNotBlank()) {
-                authViewModel.sendPhoneVerificationCode(phoneNumber, activity)
-            } else {
-                Toast.makeText(context, "Please enter phone number", Toast.LENGTH_SHORT).show()
-            }
-        }) {
-            Text("Send Verification Code")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (showCodeInput) {
-            OutlinedTextField(
-                value = smsCode,
-                onValueChange = { smsCode = it },
-                label = { Text("SMS Code") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = {
-                if (smsCode.isNotBlank()) {
-                    authViewModel.verifyPhoneNumberWithCode(smsCode)
-                } else {
-                    Toast.makeText(context, "Please enter SMS code", Toast.LENGTH_SHORT).show()
-                }
-            }) {
-                Text("Verify Code")
-            }
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         if (authState is AuthState.Loading) {
