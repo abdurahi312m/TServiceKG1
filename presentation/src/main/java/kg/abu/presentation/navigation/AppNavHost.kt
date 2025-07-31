@@ -16,12 +16,15 @@ fun AppNavHost(navController: NavHostController) {
     val startDestination = "splash"
 
     NavHost(navController = navController, startDestination = startDestination) {
+        composable("main") {
+            MainScreen()
+        }
         composable(startDestination) { SplashScreen(navController) }
         composable("onBoarding") { OnBoardingScreen(navController) }
         composable(route = "auth") {
             AuthScreen(
                 onAuthSuccess = {
-                    navController.navigate("home") {
+                    navController.navigate("main") {
                         popUpTo("auth") { inclusive = true }
                     }
                 }
