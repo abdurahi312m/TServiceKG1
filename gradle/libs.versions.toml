@@ -1,5 +1,7 @@
 [versions]
+accompanistPlaceholderMaterial = "0.36.0"
 agp = "8.11.1"
+javaxInjectVersion = "1"
 kotlin = "2.2.0-RC2"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -27,6 +29,7 @@ firebaseAuthKtx = "23.2.1"
 
 [libraries]
 
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanistPlaceholderMaterial" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -36,6 +39,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+inject-javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInjectVersion" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version = "play-services-auth" }
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version = "kotlinCoroutines" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
