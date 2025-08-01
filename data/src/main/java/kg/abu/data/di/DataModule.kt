@@ -6,6 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kg.abu.data.repository.AuthRepositoryImpl
+import kg.abu.data.repository.FakeAdRepository
+import kg.abu.domain.repository.AdRepository
 import kg.abu.domain.repository.AuthRepository
 import javax.inject.Singleton
 
@@ -23,5 +25,11 @@ object DataModule {
     @Singleton
     fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository {
         return AuthRepositoryImpl(firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdRepository(): AdRepository {
+        return FakeAdRepository()
     }
 }
